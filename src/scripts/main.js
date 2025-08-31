@@ -1,7 +1,6 @@
 'use strict';
 
 // write your code here
-const logo = document.querySelector('.logo');
 
 function success(message) {
   const div = document.createElement('div');
@@ -19,16 +18,26 @@ function error(message) {
   document.body.appendChild(div);
 }
 
-const advicePromise1 = new Promise((resolve, reject) => {
-  logo.addEventListener('click', () => {
-    resolve('Promise was resolved!');
-  });
+const promise1 = new Promise((resolve, reject) => {
+  const logo = document.querySelector('.logo');
+
+  if (logo) {
+    logo.addEventListener('click', () => {
+      resolve('Promise was resolved!');
+    });
+  }
 });
 
-advicePromise1.then((reason) => success(reason));
+promise1.then(
+  (reason) => success(reason),
+  () => error('Promise was rejected!'),
+);
 
-const advicePromise2 = new Promise((resolve, reject) => {
+const promise2 = new Promise((resolve, reject) => {
   setTimeout(reject, 3000, 'Promise was rejected!');
 });
 
-advicePromise2.catch((reason) => error(reason));
+promise2.then(
+  () => success('Promise was resolved!'),
+  (reason) => error(reason),
+);
